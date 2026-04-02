@@ -1,0 +1,40 @@
+# Docker Compose for Multi-Model AI Orchestrator
+#
+# Architecture: Orchestrator runs NATIVELY on the host.
+# Docker only runs the web dashboard.
+#
+# Why not containerize the orchestrator?
+#   1. MCP server uses stdin/stdout pipes — must run on same host as Claude Code
+#   2. CLI tools (claude, gemini, copilot) have host-level auth tokens
+#   3. Git worktrees need host filesystem access
+#   4. LLM servers (LM Studio, Ollama) run on host GPU
+#
+# Setup:
+#   1. Install orch natively: cd packages/orchestrator && npm install && npm link
+#   2. Start API server: orch mcp-serve --port 3001  (or use as MCP server)
+#   3. Start web dashboard: docker compose up -d
+#
+# Usage:
+#   docker compose up -d          # start web dashboard
+#   docker compose logs -f web    # follow dashboard logs
+#   docker compose down           # stop dashboard
+
+services:
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: orch-web
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://host.docker.internal:3001
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s

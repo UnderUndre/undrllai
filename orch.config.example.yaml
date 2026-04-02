@@ -1,0 +1,70 @@
+version: 1
+
+defaults:
+  maxRetries: 3
+  timeouts:
+    implementation: 300 # seconds
+    review: 120
+  buildCommand: "npm run build"
+  validateCommand: "npx tsc --noEmit"
+
+pipeline:
+  specify: claude
+  review-spec: gemini
+  plan: claude
+  review-plan: gemini
+  contracts: claude
+  tasks: claude
+  review-tasks: gemini
+
+ensemble:
+  "[BE]": claude
+  "[FE]": gemini
+  "[DB]": claude
+  "[OPS]": gemini
+  "[E2E]": claude
+  "[SEC]": claude
+
+tools:
+  claude:
+    command: claude
+    headlessFlags: ["-p", "--permission-mode", "bypassPermissions", "--output-format", "stream-json"]
+    strengths: [backend, review, spec, security]
+    priority: 1
+    provider: anthropic
+    enabled: true
+
+  gemini:
+    command: gemini
+    headlessFlags: ["-p", "-y"]
+    strengths: [frontend, review, spec]
+    priority: 2
+    provider: google
+    enabled: true
+
+  copilot:
+    command: copilot
+    headlessFlags: ["-p", "--yolo", "--output-format", "json"]
+    strengths: [backend, frontend, review]
+    priority: 3
+    provider: github
+    enabled: true
+
+  opencode:
+    command: opencode
+    headlessFlags: ["run", "--format", "json"]
+    strengths: [backend, database, devops]
+    priority: 4
+    provider: local
+    enabled: true
+    # Supports local models via Ollama: --model ollama/qwen3, ollama/deepseek-coder-v2, etc.
+    # Install: https://opencode.ai — requires Go or binary download
+    # Ollama must be running: ollama serve
+
+  qwen:
+    command: qwen-code
+    headlessFlags: ["--non-interactive"]
+    strengths: [backend, database]
+    priority: 5
+    provider: alibaba
+    enabled: false

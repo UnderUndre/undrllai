@@ -1,0 +1,46 @@
+{
+  "name": "@ai-helpers/orchestrator",
+  "version": "0.1.0",
+  "description": "Multi-model AI orchestrator — coordinate Claude, Gemini, Qwen through speckit pipelines",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "orch": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "lint": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "better-sqlite3": "^11.8.0",
+    "commander": "^13.1.0",
+    "eventemitter3": "^5.0.1",
+    "execa": "^9.5.2",
+    "@hono/node-server": "^1.14.1",
+    "hono": "^4.7.6",
+    "pino": "^9.6.0",
+    "strip-ansi": "^7.1.0",
+    "tree-kill": "^1.2.2",
+    "uuid": "^11.1.0",
+    "yaml": "^2.7.1",
+    "zod": "^3.24.3"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.14.0",
+    "@types/uuid": "^10.0.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.1"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

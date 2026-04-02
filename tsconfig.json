@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022"],
+    "outDir": "dist",
+    "rootDir": "src",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "exactOptionalPropertyTypes": false,
+    "paths": {
+      "#db/*": ["./src/db/*"],
+      "#engine/*": ["./src/engine/*"],
+      "#utils/*": ["./src/utils/*"],
+      "#config/*": ["./src/config/*"],
+      "#process/*": ["./src/process/*"],
+      "#registry/*": ["./src/registry/*"],
+      "#events/*": ["./src/events/*"],
+      "#parsers/*": ["./src/parsers/*"],
+      "#worktree/*": ["./src/worktree/*"],
+      "#mcp/*": ["./src/mcp/*"],
+      "#api/*": ["./src/api/*"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "tests", "web"]
+}
