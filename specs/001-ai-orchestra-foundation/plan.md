@@ -15,7 +15,7 @@ Build an open-source multi-service AI orchestra foundation with an MCP server an
 **Testing**: Jest, Playwright (for CLI integration), Supertest (for MCP API)  
 **Target Platform**: Linux Server, macOS/Windows (via Docker Desktop)  
 **Project Type**: Multi-service Infrastructure, CLI tool, MCP server, Node.js SDK  
-**Performance Goals**: <500ms routing overhead for OmniRoute, <120s Docker startup time  
+**Performance Goals**: Steady-state routing overhead <500ms after services are healthy. Cold start (Ollama model load) may take 120-360s depending on model size. <120s Docker startup time.  
 **Constraints**: Must support Docker Compose profiles (`minimal`, `coding`, `business`, `full`), requires API key auth for HTTP MCP, must support both stdio and HTTP/SSE MCP transports.  
 **Scale/Scope**: Local developer workstation scaling up to small-scale deployment (profile-dependent).
 

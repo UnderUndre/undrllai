@@ -122,20 +122,27 @@ The orchestra supports Docker Compose profiles for different use cases: `minimal
 - **FR-001**: System MUST provide a Docker Compose configuration that starts all services (OmniRoute, Hermes Agent, Qdrant, n8n, Ollama, Redis) with a single `docker compose up` command
 - **FR-002**: System MUST expose an MCP server with two transports: stdio (local) and HTTP/SSE (remote). HTTP transport MUST require API key authentication via `ORCH_MCP_API_KEY` environment variable
 - **FR-003**: System MUST provide a CLI (`orch`) with subcommands for service management, LLM routing, vector search, workflow triggering, and Hermes skill management
+- **FR-003B**: CLI MUST support optional parameters: `orch vector --filter "type=auth" --limit 10 --min-score 0.85`. Document in `contracts/cli-commands.md`
 - **FR-004**: OmniRoute MUST serve as the unified LLM gateway, routing requests to configured providers (local Ollama + cloud APIs) with automatic fallback
 - **FR-005**: Hermes Agent MUST use OmniRoute as its LLM backend via configurable `base_url`
 - **FR-006**: Hermes Agent MUST provide multi-channel gateway (Telegram, Discord, Slack, WhatsApp, Signal, Email) configurable via environment variables
 - **FR-007**: System MUST provide a TypeScript SDK (`@undrestrator/infra-client`) with typed clients for all services
+- **FR-007B**: SDK MUST support semantic versioning with backward-compatible APIs. Document breaking changes in `CHANGELOG.md` and provide migration guide. Consider major version bump for significant API changes
 - **FR-008**: System MUST support Docker Compose profiles (`minimal`, `coding`, `business`, `full`) for selective service startup
+- **FR-008B**: Support at least one additional profile: `rag` (Qdrant + OmniRoute only). Document in `infra/README.md`
 - **FR-009**: All services MUST have health check endpoints, and the MCP/CLI MUST aggregate health status
 - **FR-010**: Qdrant MUST support collection-level isolation for multi-project usage
+- **FR-010B**: Support collection aliases via SDK: `createVectorStore({ collection: 'shared-auth', alias: 'undrestrator-auth' })`. Document in `contracts/sdk-interfaces.ts`
 - **FR-011**: System MUST include `.env.example` with documented configuration for all services
 - **FR-012**: MCP server MUST expose tools: `orch_health`, `orch_llm_route`, `orch_llm_stream`, `orch_vector_upsert`, `orch_vector_search`, `orch_workflow_trigger`, `orch_workflow_list`, `orch_hermes_chat`, `orch_hermes_skills`, `orch_service_restart`
 - **FR-013**: OmniRoute MUST be integrated via its Docker Compose configuration (based on `OmniRoute/docker-compose.tls.yml`), included into the orchestra's main `docker-compose.yml` using Compose `include` directive or merged services
 - **FR-014**: Hermes Agent MUST be included as a Docker image built from the NousResearch/hermes-agent repository
+- **FR-014B**: Ollama MUST read model list from `.env` (e.g., `OLLAMA_MODELS="hermes3,nomic-embed-text"`). Default to minimal set if not configured. Document in `infra/.env.example`
 - **FR-015**: System MUST support hybrid LLM routing: local models (Ollama) for cheap tasks, cloud APIs for complex tasks, with configurable routing rules in OmniRoute
 - **FR-016**: n8n MUST be accessible for workflow automation with pre-configured connections to OmniRoute and Qdrant, AND include 3-5 pre-built workflow templates (RAG agent, webhook relay, scheduled task, web search agent) importable on first launch
 - **FR-017**: MCP server HTTP transport MUST validate `Authorization: Bearer <ORCH_MCP_API_KEY>` header on every request. stdio transport MUST NOT require authentication (inherits OS-level access control)
+- **FR-017B**: Run MCP server container with `--user 1000:1000` (non-root) and mount `.env` read-only. Document that stdio auth is "implicit trust" — suitable for local dev, not shared environments
+- **FR-018**: MCP/CLI MUST expose `orch_circuit_breaker` tool to manually reset all service connections. Document auto-recovery: MCP should retry with exponential backoff (max 5 min) before returning error
 
 ### Key Entities
 

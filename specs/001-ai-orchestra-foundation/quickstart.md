@@ -1,5 +1,9 @@
 # Quickstart
 
+## What is Hermes?
+
+Hermes Agent is an AI runtime that provides persistent memory, self-improving skills, and multi-channel communication (Telegram, Discord, etc.). Think of it as the 'brain' that orchestrates conversations across platforms.
+
 ## 1. Environment Setup
 
 ```bash
