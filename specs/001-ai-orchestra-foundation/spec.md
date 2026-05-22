@@ -141,7 +141,7 @@ The orchestra supports Docker Compose profiles for different use cases: `minimal
 - **FR-015**: System MUST support hybrid LLM routing: local models (Ollama) for cheap tasks, cloud APIs for complex tasks, with configurable routing rules in OmniRoute
 - **FR-016**: n8n MUST be accessible for workflow automation with pre-configured connections to OmniRoute and Qdrant, AND include 3-5 pre-built workflow templates (RAG agent, webhook relay, scheduled task, web search agent) importable on first launch
 - **FR-017**: MCP server HTTP transport MUST validate `Authorization: Bearer <ORCH_MCP_API_KEY>` header on every request. stdio transport MUST NOT require authentication (inherits OS-level access control)
-- **FR-017B**: Run MCP server container with `--user 1000:1000` (non-root) and mount `.env` read-only. Document that stdio auth is "implicit trust" — suitable for local dev, not shared environments
+- **FR-017B**: Run MCP server container as a non-root user and mount `.env` read-only. Document that stdio auth is "implicit trust" — suitable for local dev, not shared environments
 - **FR-018**: MCP/CLI MUST expose `orch_circuit_breaker` tool to manually reset all service connections. Document auto-recovery: MCP should retry with exponential backoff (max 5 min) before returning error
 
 ### Key Entities
@@ -160,7 +160,7 @@ The orchestra supports Docker Compose profiles for different use cases: `minimal
 - **SC-001**: `docker compose up -d` brings all services to healthy state within 120 seconds on a machine with 16GB RAM
 - **SC-002**: MCP server exposes ≥10 functional tools that pass integration tests
 - **SC-003**: CLI `orch status` returns accurate health for all services within 2 seconds
-- **SC-004**: LLM request through OmniRoute completes in <500ms overhead (excluding provider latency)
+- **SC-004**: LLM request through OmniRoute completes in <50ms overhead (excluding provider latency)
 - **SC-005**: SDK `createLLMClient()` + `createVectorStore()` pass unit tests with mocked services
 - **SC-006**: Hermes Agent successfully routes LLM requests through OmniRoute (verified by Langfuse trace or OmniRoute logs)
 - **SC-007**: Profile `minimal` uses <2GB RAM; profile `full` uses <8GB RAM (excluding LLM model memory)
